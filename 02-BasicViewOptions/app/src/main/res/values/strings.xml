@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BasicViewOptions</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="colors">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Black</item>
+        <item>White</item>
+    </string-array>
+</resources>
