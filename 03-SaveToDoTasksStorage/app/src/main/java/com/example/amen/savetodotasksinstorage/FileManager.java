@@ -25,11 +25,27 @@ public class FileManager {
     private static final String FILE_NAME = "todotasks.txt";
 
     public static final FileManager instance = new FileManager();
+    private final List<ToDoTask> list;
 
     private FileManager() {
+        list = new LinkedList<>();
     }
 
-    public void saveToFile(Context context, List<ToDoTask> listToSave) {
+    public List<ToDoTask> getList() {
+        return list;
+    }
+
+    // ładowanie do listy (która jest w pamięci aplikacji) wszystkich elementów z pliku
+    public void load(Context context){
+        list.addAll(getFromFile(context));
+    }
+
+    // zapisywanie listy do pliku.
+    public void save(Context context){
+        saveToFile(context, list);
+    }
+
+    private void saveToFile(Context context, List<ToDoTask> listToSave) {
         try {
             FileOutputStream ofs = context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
             OutputStreamWriter writer = new OutputStreamWriter(ofs);
@@ -43,16 +59,17 @@ public class FileManager {
         } catch (FileNotFoundException fnfe) {
             Toast.makeText(context, "File not found.", Toast.LENGTH_SHORT).show();
         } catch (IOException ioe) {
-            Toast.makeText(context, "File not found.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "File read error.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public List<ToDoTask> getFromFile(Context context) {
+    private List<ToDoTask> getFromFile(Context context) {
         List<ToDoTask> returnList = new LinkedList<>();
 
         try {
             FileInputStream inputStreamReader = context.openFileInput(FILE_NAME);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStreamReader));
+            InputStreamReader streamReader = new InputStreamReader(inputStreamReader);
+            BufferedReader reader = new BufferedReader(streamReader);
 
 //            InputStreamReader inputStreamReader = new InputStreamReader(context.openFileInput(FILE_NAME));
 //            BufferedReader reader = new BufferedReader(inputStreamReader);

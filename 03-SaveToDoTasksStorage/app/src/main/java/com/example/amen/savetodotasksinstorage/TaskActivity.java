@@ -37,12 +37,11 @@ public class TaskActivity extends AppCompatActivity {
                 if (!getIntent().hasExtra("Task")) {
                     ToDoTask task = createToDoTask();
 
-                    List<ToDoTask> currentListOfTasks = FileManager.instance.getFromFile(getApplicationContext());
-                    currentListOfTasks.add(task);
 
-                    FileManager.instance.saveToFile(getApplicationContext(), currentListOfTasks);
+                    FileManager.instance.getList().add(task);
+                    FileManager.instance.save(getApplicationContext());
                 }
-                setResult(RESULT_OK);
+//                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -59,24 +58,7 @@ public class TaskActivity extends AppCompatActivity {
         }
         
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-//
-//
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(500);
-//
-//                    View view = getCurrentFocus();
-//                    if (view != null) {
-//                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                    }
-//                } catch (InterruptedException ie) {
-//
-//                }
-//            }
-//        }).start();
+
 
     }
 

@@ -28,9 +28,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, TaskActivity.class);
-                startActivityForResult(i, 1);
+                startActivity(i);
             }
         });
+
+        FileManager.instance.load(getApplicationContext());
     }
 
     @Override
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         layout.removeAllViews();
-        List<ToDoTask> tasks = FileManager.instance.getFromFile(getApplicationContext());
+        List<ToDoTask> tasks = FileManager.instance.getList();
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(layout.getLayoutParams());
 
         params.topMargin = 15;
@@ -54,17 +56,11 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(MainActivity.this, TaskActivity.class);
 
                     i.putExtra("Task", task.toSerializedString());
-                    startActivityForResult(i, 1);
+                    startActivity(i);
                 }
             });
             layout.addView(btn, params);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-    }
 }
