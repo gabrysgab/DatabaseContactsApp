@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,17 +14,20 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.io.File;
+import java.util.Arrays;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout layout;
-    private boolean permissionsGranted = false;
+    private boolean permissionsChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        permissionsGranted = isStoragePermissionGranted();
+        isStoragePermissionGranted();
 
         layout = (LinearLayout) findViewById(R.id.layout);
     }
@@ -35,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         repaintButtons();
     }
 
-    public void repaintButtons(){
-        if(permissionsGranted ){
+    public void repaintButtons() {
+        if (permissionsChecked) {
             for (final File file : FileManager.instance.getFilesFromFolder()) {
                 Button newButton = new Button(this);
                 newButton.setText(file.getName());
@@ -54,17 +58,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionsChecked = true;
+
+        switch (requestCode) {
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    repaintButtons();
+                } else {
+
+                    System.exit(0);
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+
+    }
+
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (checkSelfPermission(WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
+                permissionsChecked = true;
 //                Log.v(TAG,"Permission is granted");
-                repaintButtons();
                 return true;
             } else {
 
 //                Log.v(TAG,"Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         } else { //permission is automatically granted on sdk<23 upon installation
