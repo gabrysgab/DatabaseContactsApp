@@ -3,6 +3,7 @@ package com.mgabrynowicz.sensorreaderapp;
 import android.content.Context;
 import android.os.Environment;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,7 +21,7 @@ public class FileManager {
 
     private static final String folder_name = "accelerometer";
 
-    private OutputStreamWriter writer_bin;
+    private DataOutputStream writer_bin;
     private PrintWriter writer_ascii;
     private String filename;
 
@@ -50,7 +51,7 @@ public class FileManager {
     private void openOutputStreamWriter() {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name + "/" + filename + ".bin");
-            writer_bin = new OutputStreamWriter(fileOutputStream);
+            writer_bin = new DataOutputStream(fileOutputStream);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -60,9 +61,10 @@ public class FileManager {
     }
 
     private void saveToFile(float[] values) {
-        byte[] byteArray = FloatArray2ByteArray(values);
         try {
-            writer_bin.write(new String(byteArray).toCharArray());
+            writer_bin.writeFloat(values[0]);
+            writer_bin.writeFloat(values[1]);
+            writer_bin.writeFloat(values[2]);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,11 +81,11 @@ public class FileManager {
         writer_ascii.println(builder.toString());
     }
 
-    public void openOutputStreams(){
+    public void openOutputStreams() {
         filename = "accelerometer_readings" + String.valueOf(System.currentTimeMillis());
 
-        File containingFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name );
-        if(!containingFolder.exists()){
+        File containingFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name);
+        if (!containingFolder.exists()) {
             containingFolder.mkdir();
         }
 
@@ -100,16 +102,4 @@ public class FileManager {
             e.printStackTrace();
         }
     }
-
-    public static byte[] FloatArray2ByteArray(float[] values) {
-        ByteBuffer buffer = ByteBuffer.allocate(4 * values.length);
-
-        for (float value : values) {
-            buffer.putFloat(value);
-        }
-
-        return buffer.array();
-    }
-
-
 }

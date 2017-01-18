@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void repaintButtons() {
         if (permissionsChecked) {
+            layout.removeAllViews();
+
             for (final File file : FileManager.instance.getFilesFromFolder()) {
                 Button newButton = new Button(this);
                 newButton.setText(file.getName());
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent i = new Intent(MainActivity.this, ViewActivity.class);
+                        i.putExtra("filename", file.getAbsolutePath());
                         startActivity(i);
                     }
                 });
