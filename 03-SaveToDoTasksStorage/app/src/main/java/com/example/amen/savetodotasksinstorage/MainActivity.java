@@ -62,5 +62,4 @@ public class MainActivity extends AppCompatActivity {
             layout.addView(btn, params);
         }
     }
-
 }

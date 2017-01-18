@@ -18,7 +18,6 @@ import java.util.List;
 public class TaskActivity extends AppCompatActivity {
 
     private EditText content, title, date;
-
     private Button saveBtn;
 
     @Override
@@ -41,7 +40,7 @@ public class TaskActivity extends AppCompatActivity {
                     FileManager.instance.getList().add(task);
                     FileManager.instance.save(getApplicationContext());
                 }
-//                setResult(RESULT_OK);
+
                 finish();
             }
         });
@@ -58,8 +57,6 @@ public class TaskActivity extends AppCompatActivity {
         }
         
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-
-
     }
 
     private ToDoTask createToDoTask() {
@@ -74,6 +71,4 @@ public class TaskActivity extends AppCompatActivity {
 
         return new ToDoTask(titleString, contentString, currentDate);
     }
-
-
 }

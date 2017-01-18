@@ -19,6 +19,7 @@ import static com.example.amen.basicviewoptions.MainActivity.KEY_WIDTH;
 import static com.example.amen.basicviewoptions.MainActivity.PREFS_NAME;
 
 public class PrefsEditorActivity extends AppCompatActivity {
+    ArrayAdapter<String> adapter;
 
     private EditText inputWidth, inputHeight;
 
@@ -27,7 +28,6 @@ public class PrefsEditorActivity extends AppCompatActivity {
 
     private Button saveButton;
 
-    ArrayAdapter<String> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +53,6 @@ public class PrefsEditorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 savePreferences();
-
-                setResult(RESULT_OK);
                 finish();
             }
         });
