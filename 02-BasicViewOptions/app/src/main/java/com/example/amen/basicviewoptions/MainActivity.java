@@ -118,14 +118,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     private void openPreferencesEditor() {
         Intent intent = new Intent(this, PrefsEditorActivity.class);
-        startActivityForResult(intent, 1);
+        startActivity(intent);
     }
 
     private void clearPreferences() {

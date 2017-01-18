@@ -71,9 +71,6 @@ public class FileManager {
             InputStreamReader streamReader = new InputStreamReader(inputStreamReader);
             BufferedReader reader = new BufferedReader(streamReader);
 
-//            InputStreamReader inputStreamReader = new InputStreamReader(context.openFileInput(FILE_NAME));
-//            BufferedReader reader = new BufferedReader(inputStreamReader);
-
             String line = reader.readLine();
 
             while (line != null && !line.isEmpty()) {
