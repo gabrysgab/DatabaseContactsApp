@@ -1,20 +1,15 @@
 package com.example.amen.externalstoragereaderapp;
 
-import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +22,7 @@ public class FileManager {
 
     private static final String folder_name = "accelerometer";
 
-    private FileInputStream reader_bin;
+    private DataInputStream reader_bin;
     private BufferedReader reader_ascii;
 
     private FileManager() {
@@ -47,9 +42,9 @@ public class FileManager {
         }
     }
 
-    private void openOutputStreamWriter(String filename) {
+    private void openInputStreamReader(String filename) {
         try {
-            reader_bin = new FileInputStream(filename);
+            reader_bin = new DataInputStream(new FileInputStream(filename));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -81,7 +76,7 @@ public class FileManager {
         }
 
         if (filename.endsWith(".bin")) {
-            openOutputStreamWriter(filename);
+            openInputStreamReader(filename);
         } else {
             openInputStreamReaderASCII(filename);
         }
@@ -109,39 +104,19 @@ public class FileManager {
         return "Error reading file.";
     }
 
-//    public static byte[] FloatArray2ByteArray(float[] values) {
-//        ByteBuffer buffer = ByteBuffer.allocate(4 * values.length);
-//
-//        for (float value : values) {
-//            buffer.putFloat(value);
-//        }
-//
-//        return buffer.array();
-//    }
-//
-//    private void saveToFile(float[] values) {
-//        byte[] byteArray = FloatArray2ByteArray(values);
-//        try {
-//            writer_bin.write(new String(byteArray).toCharArray());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private String readBinary() throws IOException {
         StringBuilder builder = new StringBuilder();
 
-        DataInputStream dis = new DataInputStream(reader_bin);
+        while (reader_bin.available() >= 12) {
 
-        while (dis.available() >= 12) {
-
-            builder.append(String.valueOf(dis.readFloat()));
-            builder.append(String.valueOf(dis.readFloat()));
-            builder.append(String.valueOf(dis.readFloat()));
+            builder.append(String.valueOf(reader_bin.readFloat()));
+            builder.append(String.valueOf(reader_bin.readFloat()));
+            builder.append(String.valueOf(reader_bin.readFloat()));
             builder.append("\n");
         }
 
-        dis.close();
+        reader_bin.close();
         return builder.toString();
     }
 

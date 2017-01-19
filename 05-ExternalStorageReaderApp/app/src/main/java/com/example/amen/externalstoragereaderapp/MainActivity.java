@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     repaintButtons();
                 } else {
 
-                    System.exit(0);
+                    finish();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }

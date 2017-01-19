@@ -37,7 +37,8 @@ public class FileManager {
     private void openOutputStreamWriterASCII() {
         try {
 
-            FileOutputStream fileOutputStreamAscii = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name + "/" + filename + ".ascii");
+            FileOutputStream fileOutputStreamAscii = new FileOutputStream(
+                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name + "/" + filename + ".ascii");
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStreamAscii);
             writer_ascii = new PrintWriter(outputStreamWriter);
 
@@ -50,7 +51,8 @@ public class FileManager {
 
     private void openOutputStreamWriter() {
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name + "/" + filename + ".bin");
+            FileOutputStream fileOutputStream = new FileOutputStream(
+                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + folder_name + "/" + filename + ".bin");
             writer_bin = new DataOutputStream(fileOutputStream);
 
         } catch (FileNotFoundException e) {
@@ -94,7 +96,6 @@ public class FileManager {
     }
 
     public void closeOutputStreams() {
-
         try {
             writer_bin.close();
             writer_ascii.close();
