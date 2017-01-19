@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button first, second;
 
+    Fragment fragmentToSet;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setFragment(int i) {
-        Fragment fragmentToSet;
+
         if (i == 1) {
             fragmentToSet = new FirstFragment();
         } else {
